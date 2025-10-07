@@ -76,15 +76,7 @@ class Beam:
     """
     こうかとんが放つビームに関するクラス
     """
-    def __init__(self, bird:"Bird"):
-        """
-        ビーム画像Surfaceを生成する
-        引数 bird：ビームを放つこうかとん（Birdインスタンス）
-        """
-        self.img = pg.image.load(f"fig/beam.png")  # ビームSurface
-        self.rct = self.img.get_rect()  # ビームRect
-        self.rct.centery = bird.rct.centery  # こうかとんの中心縦座標
-        self.rct.left = bird.rct.right  # こうかとんの右座標
+
     def __init__(self, bird: Bird):
         self.img = pg.image.load(f"fig/beam.png")
         self.rct = self.img.get_rect()
@@ -93,8 +85,12 @@ class Beam:
         self.vx, self.vy = +5, 0
 
     def update(self, screen: pg.Surface):
+        """
+        2ビームを速度ベクトルself.vx, self.vyで動かし，画面外に出たら消える
+        """
         self.rct.move_ip(self.vx, self.vy)
         screen.blit(self.img, self.rct)
+        # ビームが画面外に出たら消える
 
 
 class Bomb:
