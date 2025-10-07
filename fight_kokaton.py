@@ -96,7 +96,7 @@ class Beam:
         self.img = pg.image.load(f"fig/beam.png")
         self.rct = self.img.get_rect()
         self.rct.centery = bird.rct.centery
-        self.rct.left = bird.rct.right
+        self.rct.left = bird.rct.right 
         self.vx, self.vy = +5, 0
 
     def update(self, screen: pg.Surface):
@@ -158,22 +158,26 @@ def main():
                 beam = Beam(bird)            
         screen.blit(bg_img, [0, 0])
         
-        if bird.rct.colliderect(bomb.rct):
-            # ゲームオーバー時に，こうかとん画像を切り替え，1秒間表示させる
-            bird.change_img(8, screen)
-            pg.display.update()
-            time.sleep(1)
-            return
+        if bomb is not None:
+            if bird.rct.colliderect(bomb.rct):
+                # ゲームオーバー時に，こうかとん画像を切り替え，1秒間表示させる
+                bird.change_img(8, screen)
+                pg.display.update()
+                time.sleep(1)
+                return
 
         key_lst = pg.key.get_pressed()
         bird.update(key_lst, screen)
         if beam is not None:
             beam.update(screen)
+        if bomb is not None:
+            bomb.update(screen)
+
             if beam.rct.colliderect(bomb.rct):
                 # ビームが爆弾に当たったら，爆弾を消す
                 beam = None
                 bomb = None
-        bomb.update(screen)
+        
         pg.display.update()   
         tmr += 1
         clock.tick(50)
